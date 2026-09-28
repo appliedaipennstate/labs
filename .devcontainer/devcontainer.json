@@ -1,0 +1,19 @@
+{
+  "name": "Applied AI Labs",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "hostRequirements": { "cpus": 2 },
+  "postCreateCommand": "chmod +x bin/labs && sudo ln -sf \"$(pwd)/bin/labs\" /usr/local/bin/labs",
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["WELCOME.md"]
+    },
+    "vscode": {
+      "extensions": ["GitHub.copilot", "GitHub.copilot-chat"],
+      "settings": {
+        "workbench.editorAssociations": { "**/WELCOME.md": "vscode.markdown.preview.editor" },
+        "workbench.secondarySideBar.defaultVisibility": "visible",
+        "chat.agent.enabled": true
+      }
+    }
+  }
+}
