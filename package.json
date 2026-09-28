@@ -1,0 +1,9 @@
+{
+  "name": "labs",
+  "private": true,
+  "type": "module",
+  "description": "Applied AI Labs at Penn State",
+  "scripts": {
+    "test": "node --test"
+  }
+}
