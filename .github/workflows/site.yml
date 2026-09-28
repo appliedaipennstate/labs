@@ -38,3 +38,15 @@ jobs:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+      # Members only ever get https links, so check the wall the same way they reach it.
+      # curl fails on a bad certificate, so a stalled certificate shows up here as a red run.
+      - name: Check the live wall over https
+        run: |
+          for i in 1 2 3 4 5 6; do
+            if curl -sf --max-time 10 "https://labs.appliedaipennstate.com/wall.json?t=$(date +%s)" > /dev/null; then
+              echo "The wall is reachable over https."; exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::https://labs.appliedaipennstate.com/wall.json is not reachable with a valid certificate."
+          exit 1
