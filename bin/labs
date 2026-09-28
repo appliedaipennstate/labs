@@ -10,17 +10,8 @@ import { spawnSync } from 'node:child_process'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { validateCard, cardPath, renderTemplate } from '../lib/card.mjs'
-import {
-  UPSTREAM,
-  WALL_URL,
-  PR_BODY,
-  loginFromEnv,
-  branchFor,
-  prTitle,
-  ownerFromRemote,
-  headFor,
-  existingPrUrl,
-} from '../lib/cli.mjs'
+import { UPSTREAM, WALL_URL, PR_BODY, loginFromEnv, branchFor, prTitle, ownerFromRemote } from '../lib/cli.mjs'
+import { openPullRequest } from '../lib/github.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 process.chdir(ROOT)
@@ -49,10 +40,8 @@ const fail = (s) => {
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms))
 
 function whoami() {
-  const fromEnv = loginFromEnv(process.env)
-  if (fromEnv) return fromEnv
-  const r = run('gh', ['api', 'user', '--jq', '.login'], { quiet: true })
-  if (r.ok && r.out) return r.out.toLowerCase()
+  const login = loginFromEnv(process.env)
+  if (login) return login
   fail("I couldn't tell which GitHub account you're signed in with. Open this in a Codespace and try again.")
 }
 
@@ -117,14 +106,20 @@ async function cmdSubmit() {
   }
 
   say('4/4  Opening a pull request (asking the club to add your card)...')
-  const pr = run(
-    'gh',
-    ['pr', 'create', '--repo', UPSTREAM, '--base', 'main', '--head', headFor(originOwner, branch), '--title', prTitle(values.name), '--body', PR_BODY],
-    { quiet: true }
-  )
-  const url = pr.ok ? pr.out.split('\n').pop() : existingPrUrl(pr.err)
-  if (!url) {
-    process.stderr.write(pr.err + '\n')
+  let url
+  try {
+    url = (
+      await openPullRequest({
+        token: process.env.GITHUB_TOKEN,
+        upstream: UPSTREAM,
+        owner: originOwner,
+        branch,
+        title: prTitle(values.name),
+        body: PR_BODY,
+      })
+    ).url
+  } catch (err) {
+    console.log(`GitHub said: ${err.message}`)
     fail("The pull request didn't open. Ask a helper in your breakout room.")
   }
   say()

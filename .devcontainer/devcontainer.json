@@ -1,18 +1,28 @@
 {
   "name": "Applied AI Labs",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "hostRequirements": { "cpus": 2 },
-  "postCreateCommand": "chmod +x bin/labs && sudo ln -sf \"$(pwd)/bin/labs\" /usr/local/bin/labs",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
+  "hostRequirements": {
+    "cpus": 2
+  },
+  "postCreateCommand": "sudo ln -sf \"$(pwd)/bin/labs\" /usr/local/bin/labs",
   "customizations": {
     "codespaces": {
-      "openFiles": ["WELCOME.md"]
+      "openFiles": [
+        "WELCOME.md"
+      ]
     },
     "vscode": {
-      "extensions": ["GitHub.copilot", "GitHub.copilot-chat"],
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
+      ],
       "settings": {
-        "workbench.editorAssociations": { "**/WELCOME.md": "vscode.markdown.preview.editor" },
+        "workbench.editorAssociations": {
+          "**/WELCOME.md": "vscode.markdown.preview.editor"
+        },
         "workbench.secondarySideBar.defaultVisibility": "visible",
-        "chat.agent.enabled": true
+        "chat.agent.enabled": true,
+        "git.autofetch": false
       }
     }
   }

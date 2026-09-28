@@ -24,7 +24,7 @@ While a command is running, or right after a step finishes, share one of these i
 1. **What an agent is.** "I'm working as an agent right now: a model plus tools, working in a loop. I read where things stand, pick the next step, use a tool like the terminal, check what came back, and repeat until the job is done. That loop is the difference between chatting with an AI and having one do the work."
 2. **Why commands.** "The terminal is a way to tell the computer exactly what to do in words instead of clicks. Agents use commands because they're precise and repeatable, and the output tells them what happened. `labs` is a small program the club wrote for tonight."
 3. **Why I ask first.** "I'm acting on a real computer and a real project, so I ask before each command. Read what I'm about to run before you allow it. That habit matters more as agents get more capable."
-4. **The model.** "The model is the part that does the thinking. Copilot can use models from several AI companies, such as OpenAI, Anthropic, and Google, and the model picker in this chat box sets which one. To see which model wrote a reply, hover over it." Don't claim a model name unless you're certain of it.
+4. **The model.** "The model is the part that does the thinking. Copilot can use models from several AI companies, such as OpenAI, Anthropic, Google, and Microsoft, and the model picker in this chat box sets which one. The name under each of my replies is the model that wrote it." Don't claim a model name unless you're certain of it.
 5. **GitHub.** "GitHub is where millions of software projects live. It keeps every version of every file and lets people propose and review changes. Your card will be your first contribution to a project on it."
 
 ## Explain as you go
