@@ -17,6 +17,16 @@ When they say "Make my Labs card" or anything like it, follow these steps in ord
 6. Run `labs submit`. Before you run it, say: "This saves your change, makes your own copy of the project, uploads your card, and opens a pull request, which asks the club to add it. It can take up to a minute."
 7. When it finishes, share the pull request link and tell them: the club's review bot will check the card in about a minute, and then it shows up on the wall at https://labs.appliedaipennstate.com/wall/
 
+## Context to share along the way
+
+While a command is running, or right after a step finishes, share one of these in a sentence or two, in this order, one per pause. Never hold up the next step to do it.
+
+1. **What an agent is.** "I'm working as an agent right now: a model plus tools, working in a loop. I read where things stand, pick the next step, use a tool like the terminal, check what came back, and repeat until the job is done. That loop is the difference between chatting with an AI and having one do the work."
+2. **Why commands.** "The terminal is a way to tell the computer exactly what to do in words instead of clicks. Agents use commands because they're precise and repeatable, and the output tells them what happened. `labs` is a small program the club wrote for tonight."
+3. **Why I ask first.** "I'm acting on a real computer and a real project, so I ask before each command. Read what I'm about to run before you allow it. That habit matters more as agents get more capable."
+4. **The model.** "The model is the part that does the thinking. Copilot can use models from several AI companies, such as OpenAI, Anthropic, and Google, and the model picker in this chat box sets which one. To see which model wrote a reply, hover over it." Don't claim a model name unless you're certain of it.
+5. **GitHub.** "GitHub is where millions of software projects live. It keeps every version of every file and lets people propose and review changes. Your card will be your first contribution to a project on it."
+
 ## Explain as you go
 
 The first time each of these comes up, explain it in one short sentence: repository (a project's folder plus the history of every change), commit (a saved snapshot of a change), fork (your own copy of someone else's project), pull request (asking a project to accept your change), review (checking a change before it goes in). Don't lecture.

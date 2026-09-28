@@ -12,11 +12,14 @@ Copilot will ask you three questions, write your card, and send it to the club. 
 
 Watch your card show up: https://labs.appliedaipennstate.com/wall/
 
-## Four ideas you'll use tonight
+## What's actually happening tonight
 
-- **Repository:** a project's folder, plus the history of every change ever made to it. This one belongs to the club.
+- **GitHub:** where millions of software projects live. It keeps every version of every file and lets people propose and review changes to a project.
+- **Repository:** a project's folder on GitHub, plus the history of every change ever made to it. This one belongs to the club.
 - **Codespace:** the workspace you're in right now. A computer in the cloud with the project already on it.
-- **Agent:** an AI that does the work instead of just answering. It edits files and runs commands, and it asks you before each step.
+- **Terminal and commands:** the panel at the bottom of the window. You type a command, the computer runs it and prints what happened. `labs` is a small program the club wrote for tonight.
+- **Model:** the AI that does the thinking. Copilot can use models from several companies, such as OpenAI, Anthropic, and Google. To see which model wrote a reply, hover over it.
+- **Agent:** a model plus tools, working in a loop. It reads where things stand, picks the next step, uses a tool like the terminal, checks what came back, and repeats until the job is done. It asks you before each command because it's acting on a real computer.
 - **Pull request:** how you ask a project you don't own to accept your change. The change gets reviewed, then merged in.
 
 ## If Copilot isn't working

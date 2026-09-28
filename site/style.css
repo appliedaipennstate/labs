@@ -160,6 +160,41 @@ h1 {
   margin: 0;
 }
 
+.explain {
+  margin-top: 40px;
+}
+
+.explain h2 {
+  font-size: 24px;
+  margin: 0 0 12px;
+}
+
+.explain dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 12px 24px;
+}
+
+.explain dt {
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.explain dd {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .explain dl {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .explain dd {
+    margin-bottom: 12px;
+  }
+}
+
 .wall-head {
   display: flex;
   align-items: baseline;

@@ -100,7 +100,7 @@ async function cmdSubmit() {
     fail('Git could not save your commit. Ask a helper in your breakout room.')
   }
 
-  say('2/4  Getting your own copy of the club repo ready (this can take a few seconds)...')
+  say("2/4  Getting your fork ready: your own copy of the club's project on GitHub (this can take a few seconds)...")
   // In a Codespace, your first commit makes GitHub create your fork and point "origin" at it.
   for (let waited = 0; waited < 90_000; waited += 3_000) {
     if (run('git', ['remote'], { quiet: true }).out.split('\n').includes('upstream')) break
