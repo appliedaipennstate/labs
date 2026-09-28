@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Applied AI Labs</title>
+    <meta name="description" content="Put your card on the Applied AI Labs wall. Three steps, and your AI agent does the work." />
+    <link rel="icon" href="/icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <img class="logo" src="/logo.png" alt="Applied AI" width="132" height="39" />
+
+      <h1>Put your card on the Labs wall</h1>
+      <p class="lede">
+        Three steps. Your AI agent does the work, and you'll see how a real software team adds a change to a shared
+        project.
+      </p>
+
+      <ol class="steps">
+        <li class="step">
+          <span class="num" aria-hidden="true">1</span>
+          <div>
+            <h2>Open your workspace</h2>
+            <p>This opens a Codespace: a coding workspace in your browser with the club's project and GitHub Copilot ready to go.</p>
+            <p>
+              <a class="button" href="https://codespaces.new/appliedaipennstate/labs?quickstart=1" target="_blank" rel="noopener"
+                >Open my Codespace</a
+              >
+            </p>
+            <p class="note">Sign in to GitHub if it asks. It takes about a minute to start.</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="num" aria-hidden="true">2</span>
+          <div>
+            <h2>Ask your agent</h2>
+            <p>Open the Copilot chat, set it to <strong>Agent</strong>, and send this:</p>
+            <p class="prompt">
+              <code>Make my Labs card</code>
+              <button class="copy" type="button" data-copy="Make my Labs card">Copy</button>
+            </p>
+            <p class="note">
+              Copilot will ask you three questions and write your card. Each time it wants to run a command, it will tell you
+              what the command does. Read it, then click to allow it.
+            </p>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="num" aria-hidden="true">3</span>
+          <div>
+            <h2>Watch the wall</h2>
+            <p>
+              When Copilot says your pull request is open, the club's review bot checks your card. About a minute later, it
+              shows up below.
+            </p>
+          </div>
+        </li>
+      </ol>
+
+      <section class="stuck">
+        <h2>Copilot not working?</h2>
+        <p>
+          In your Codespace, click in the terminal at the bottom and type <code>labs new</code>. Open the card it makes, fill
+          in the three lines, then type <code>labs submit</code>.
+        </p>
+      </section>
+
+      <div class="wall-head">
+        <h2>The wall</h2>
+        <span class="count" data-count></span>
+      </div>
+      <div class="wall" data-wall aria-live="polite"></div>
+
+      <footer>
+        Applied AI Labs, part of the <a href="https://appliedaipennstate.com">Applied AI Club at Penn State</a>.
+        <a href="https://github.com/appliedaipennstate/labs">See the project on GitHub</a>.
+      </footer>
+    </main>
+    <script src="/wall.js"></script>
+  </body>
+</html>

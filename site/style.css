@@ -1,0 +1,284 @@
+:root {
+  --navy: #1e3f7c;
+  --ink: #2e3238;
+  --muted: #6b7280;
+  --line: #d9dfea;
+  --panel: #f3f5f9;
+  --bg: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+a {
+  color: var(--navy);
+}
+
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+.logo {
+  display: block;
+  width: 132px;
+  height: auto;
+}
+
+h1 {
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.12;
+  margin: 48px 0 12px;
+  letter-spacing: -0.01em;
+}
+
+.lede {
+  font-size: 21px;
+  color: var(--ink);
+  max-width: 640px;
+  margin: 0 0 40px;
+}
+
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.step {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 16px;
+}
+
+.num {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+}
+
+.step h2 {
+  font-size: 22px;
+  margin: 6px 0 6px;
+}
+
+.step p {
+  margin: 0 0 12px;
+}
+
+.step p:last-child {
+  margin-bottom: 0;
+}
+
+.button {
+  display: inline-block;
+  background: var(--navy);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 0;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:focus-visible,
+.copy:focus-visible {
+  outline: 3px solid #96bee6;
+  outline-offset: 2px;
+}
+
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.prompt code {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 18px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.copy {
+  background: #fff;
+  color: var(--navy);
+  border: 1px solid var(--navy);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.stuck {
+  margin-top: 24px;
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 20px 24px;
+}
+
+.stuck h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+.stuck p {
+  margin: 0;
+}
+
+.wall-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 56px 0 16px;
+}
+
+.wall-head h2 {
+  font-size: 28px;
+  margin: 0;
+}
+
+.count {
+  color: var(--muted);
+}
+
+.wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  background: #fff;
+}
+
+.card.new {
+  animation: arrive 900ms ease-out;
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    border-color: var(--navy);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.card .name {
+  font-weight: 700;
+  font-size: 20px;
+  margin: 0;
+}
+
+.card .major {
+  color: var(--navy);
+  font-size: 15px;
+  margin: 2px 0 10px;
+}
+
+.card .build-label {
+  color: var(--muted);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.card .build {
+  margin: 2px 0 0;
+}
+
+.empty {
+  color: var(--muted);
+}
+
+footer {
+  margin-top: 64px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* The full-screen wall for screen sharing. */
+.screen {
+  max-width: none;
+  padding: 36px 48px;
+}
+
+.screen .wall-head {
+  margin-top: 28px;
+}
+
+.screen .wall-head h2 {
+  font-size: 40px;
+}
+
+.screen .count {
+  font-size: 24px;
+}
+
+.screen .wall {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.screen .card .name {
+  font-size: 24px;
+}
+
+.screen .card .build {
+  font-size: 19px;
+}
+
+.screen .addyours {
+  font-size: 22px;
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.new {
+    animation: none;
+  }
+}

@@ -1,0 +1,42 @@
+name: Review card
+
+# pull_request_target runs this repository's own copy of the workflow with permission to
+# comment and merge. It reads the pull request's card through the API as text and never
+# checks out or runs the pull request's code.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    outputs:
+      merged: ${{ steps.review.outputs.merged }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: review
+        run: node scripts/review-pr.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
+  # A merge made with GITHUB_TOKEN does not start other workflows, so the site is
+  # rebuilt from here.
+  deploy:
+    needs: review
+    if: needs.review.outputs.merged == 'true'
+    uses: ./.github/workflows/site.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
