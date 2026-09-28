@@ -1,0 +1,145 @@
+#!/usr/bin/env node
+// labs: make, check, and submit your Applied AI Labs card.
+//
+//   labs new      create your card from the template
+//   labs check    check your card and say what to fix
+//   labs submit   send your card to the club as a pull request
+
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { validateCard, cardPath, renderTemplate } from '../lib/card.mjs'
+import {
+  UPSTREAM,
+  WALL_URL,
+  PR_BODY,
+  loginFromEnv,
+  branchFor,
+  prTitle,
+  ownerFromRemote,
+  headFor,
+  existingPrUrl,
+} from '../lib/cli.mjs'
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
+process.chdir(ROOT)
+
+// Codespaces keeps its GitHub sign-in in this file. Terminals opened in the editor already
+// have it; other shells may not, so load it quietly when it is missing.
+const CODESPACE_ENV = '/workspaces/.codespaces/shared/.env'
+if (!process.env.GITHUB_TOKEN && existsSync(CODESPACE_ENV)) {
+  for (const line of readFileSync(CODESPACE_ENV, 'utf8').split('\n')) {
+    const i = line.indexOf('=')
+    if (i > 0 && !(line.slice(0, i) in process.env)) process.env[line.slice(0, i)] = line.slice(i + 1)
+  }
+}
+
+function run(cmd, args, { quiet = false } = {}) {
+  const r = spawnSync(cmd, args, { encoding: 'utf8' })
+  if (!quiet && r.status !== 0) process.stderr.write(r.stderr || '')
+  return { ok: r.status === 0, out: (r.stdout || '').trim(), err: (r.stderr || '').trim() }
+}
+
+const say = (s = '') => console.log(s)
+const fail = (s) => {
+  console.log(s)
+  process.exit(1)
+}
+const sleep = (ms) => new Promise((done) => setTimeout(done, ms))
+
+function whoami() {
+  const fromEnv = loginFromEnv(process.env)
+  if (fromEnv) return fromEnv
+  const r = run('gh', ['api', 'user', '--jq', '.login'], { quiet: true })
+  if (r.ok && r.out) return r.out.toLowerCase()
+  fail("I couldn't tell which GitHub account you're signed in with. Open this in a Codespace and try again.")
+}
+
+function cmdNew() {
+  const path = cardPath(whoami())
+  if (existsSync(path)) {
+    say(`You already have a card: ${path}`)
+    say('Open it, fill it in, then run: labs check')
+    return
+  }
+  writeFileSync(path, renderTemplate())
+  say(`Made your card: ${path}`)
+  say('Replace each part in [square brackets] with your answer, then run: labs check')
+}
+
+function cmdCheck({ quietWhenGood = false } = {}) {
+  const path = cardPath(whoami())
+  if (!existsSync(path)) fail("You don't have a card yet. Run: labs new")
+  const result = validateCard(readFileSync(path, 'utf8'))
+  if (result.ok) {
+    if (!quietWhenGood) say('Your card looks good. When you are ready, run: labs submit')
+    return result
+  }
+  say(`Your card needs ${result.problems.length === 1 ? 'one fix' : result.problems.length + ' fixes'}:`)
+  for (const p of result.problems) say(`  - ${p}`)
+  process.exit(1)
+}
+
+async function cmdSubmit() {
+  const login = whoami()
+  const path = cardPath(login)
+  const { values } = cmdCheck({ quietWhenGood: true })
+  const branch = branchFor(login)
+
+  say('1/4  Saving your card as a commit (a saved snapshot of your change)...')
+  if (run('git', ['branch', '--show-current'], { quiet: true }).out !== branch) {
+    const exists = run('git', ['rev-parse', '--verify', '--quiet', branch], { quiet: true }).ok
+    if (!run('git', exists ? ['switch', branch] : ['switch', '-c', branch]).ok) {
+      fail('Git could not switch to your card branch. Ask a helper in your breakout room.')
+    }
+  }
+  run('git', ['add', path])
+  const staged = !run('git', ['diff', '--cached', '--quiet'], { quiet: true }).ok
+  if (staged && !run('git', ['commit', '-q', '-m', prTitle(values.name)]).ok) {
+    fail('Git could not save your commit. Ask a helper in your breakout room.')
+  }
+
+  say('2/4  Getting your own copy of the club repo ready (this can take a few seconds)...')
+  // In a Codespace, your first commit makes GitHub create your fork and point "origin" at it.
+  for (let waited = 0; waited < 90_000; waited += 3_000) {
+    if (run('git', ['remote'], { quiet: true }).out.split('\n').includes('upstream')) break
+    if (ownerFromRemote(run('git', ['remote', 'get-url', 'origin'], { quiet: true }).out) === login) break
+    if (waited === 0 && run('git', ['push', '--dry-run', 'origin', branch], { quiet: true }).ok) break
+    await sleep(3_000)
+  }
+  const originOwner = ownerFromRemote(run('git', ['remote', 'get-url', 'origin'], { quiet: true }).out)
+  if (!originOwner) fail("Your copy isn't ready yet. Wait 30 seconds, then run: labs submit")
+
+  say('3/4  Uploading your card to your copy...')
+  if (!run('git', ['push', '-q', '-u', 'origin', branch]).ok) {
+    fail("The upload didn't go through. Wait 30 seconds, then run: labs submit")
+  }
+
+  say('4/4  Opening a pull request (asking the club to add your card)...')
+  const pr = run(
+    'gh',
+    ['pr', 'create', '--repo', UPSTREAM, '--base', 'main', '--head', headFor(originOwner, branch), '--title', prTitle(values.name), '--body', PR_BODY],
+    { quiet: true }
+  )
+  const url = pr.ok ? pr.out.split('\n').pop() : existingPrUrl(pr.err)
+  if (!url) {
+    process.stderr.write(pr.err + '\n')
+    fail("The pull request didn't open. Ask a helper in your breakout room.")
+  }
+  say()
+  say(`Done. Your pull request: ${url}`)
+  say(`The club's review bot will check it in about a minute. Watch for your card on the wall: ${WALL_URL}`)
+}
+
+const HELP = `labs: make, check, and submit your Applied AI Labs card
+
+  labs new      create your card from the template
+  labs check    check your card and say what to fix
+  labs submit   send your card to the club as a pull request`
+
+const [command] = process.argv.slice(2)
+if (command === 'new') cmdNew()
+else if (command === 'check') cmdCheck()
+else if (command === 'submit') await cmdSubmit()
+else say(HELP)
