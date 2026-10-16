@@ -341,3 +341,22 @@ footer {
   max-width: 560px;
   color: var(--muted);
 }
+
+.legal h2 {
+  font-size: 22px;
+  margin: 32px 0 8px;
+}
+
+.legal p,
+.legal li {
+  max-width: 720px;
+}
+
+.legal ul {
+  padding-left: 22px;
+  margin: 0 0 12px;
+}
+
+.legal footer {
+  margin-top: 48px;
+}
