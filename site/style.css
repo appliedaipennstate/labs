@@ -317,3 +317,27 @@ footer {
     animation: none;
   }
 }
+
+/* Entrance to the Labs platform (the app lives at home.appliedaipennstate.com) */
+.platform {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 24px;
+}
+.platform h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+.platform p {
+  margin: 0;
+  font-size: 16px;
+  max-width: 560px;
+  color: var(--muted);
+}
